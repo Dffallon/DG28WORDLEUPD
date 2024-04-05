@@ -1,0 +1,145 @@
+<!-- So far it seems better (for me) to use JS alone. This is simply because I have more of an understanding of it. JS is simple and lightweight, where React can be versitile for large modular projects,
+for a small project it seems to be more confusing. I think for larger projects in the future where I have more of an understanding of React, it will present itself as 
+more useful.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordle Game</title>
+  <!-- React and ReactDOM -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    #root {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    h2 {
+      color: #666;
+    }
+
+    .guess {
+      margin-bottom: 10px;
+    }
+
+    .guess div {
+      margin-bottom: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // Wordle-Board component
+    const WordleBoard = () => {
+      // Hardcoded guesses
+      const guesses = ["might", "flood", "stray"];
+      const answer = "moody";
+
+      // Calculate and display results
+      const results = guesses.map(guess => {
+        let correctLetters = 0;
+        let correctPositions = 0;
+
+        // Check for correct letters and positions
+        for (let i = 0; i < answer.length; i++) {
+          if (guess.includes(answer[i])) {
+            correctLetters++;
+          }
+          if (guess[i] === answer[i]) {
+            correctPositions++;
+          }
+        }
+
+        // Display results
+        return (
+          <div className="guess">
+            <div>Guess: {guess}</div>
+            <div>Correct Letters: {correctLetters}</div>
+            <div>Correct Positions: {correctPositions}</div>
+          </div>
+        );
+      });
+
+      // Render Wordle-Board
+      return (
+        <div>
+          <h1>Wordle</h1>
+          <h2>Guesses:</h2>
+          {results}
+        </div>
+      );
+    };
+
+    // Define On-Screen-Keyboard component
+    const OnScreenKeyboard = () => {
+      // Render On-Screen-Keyboard
+      return (
+        <div>
+          <h2>On-Screen Keyboard:</h2>
+          {/* Render each letter as a button */}
+          {Array.from("abcdefghijklmnopqrstuvwxyz").map(letter => (
+            <button key={letter}>{letter}</button>
+          ))}
+        </div>
+      );
+    };
+
+    // Define App component
+    const App = () => {
+      // Render App with Wordle-Board and On-Screen-Keyboard components
+      return (
+        <div id="game">
+          <WordleBoard />
+          <OnScreenKeyboard />
+        </div>
+      );
+    };
+
+    // Render the App component inside the root div
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
